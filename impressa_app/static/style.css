@@ -1,0 +1,288 @@
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+.b-example-divider {
+  width: 100%;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 100vh;
+}
+
+.bi {
+  vertical-align: -.125em;
+  fill: currentColor;
+}
+
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.btn-bd-primary {
+  --bd-violet-bg: #712cf9;
+  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet-bg);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #6528e0;
+  --bs-btn-hover-border-color: #6528e0;
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #5a23c8;
+  --bs-btn-active-border-color: #5a23c8;
+}
+
+.bd-mode-toggle {
+  z-index: 1500;
+}
+
+.bd-mode-toggle .bi {
+  width: 1em;
+  height: 1em;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+  display: block !important;
+}
+
+.header_container{
+    height: 23vh;
+}
+
+.cabecalho{
+    background-color: #0a5c0a;
+}
+
+
+.logo_img{
+  width: 40%;
+  height: 40%;
+}
+
+.cabecalho-btn{
+    margin-right: 5px;
+    color: white;
+}
+
+.nav-link{
+    color: white;
+}
+
+.nav-link:hover{
+    color: black;
+}
+
+
+.container{
+    margin-top: 5vh;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.container-xxl{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10vh;
+    
+}
+
+
+.card-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+.card{
+    width: 100%;
+    transition: transform 0.3s ease;
+    transition: box-shadow 0.2s ease;
+    
+}
+
+.card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(10, 92, 10, 0.4); /* Mais visível */
+
+    
+}
+
+.card:active{
+    transform: scale(0.98);
+}
+
+
+.btn_tema{
+  background-color: 	rgb(4, 184, 4);
+}
+
+.btn_tema:hover{
+  background-color: 		#90ee90;
+}
+
+.footer{
+  background-color: #0a5c0a;
+  margin-top: 10px;
+}
+
+.footer p {
+  color: white;
+}
+
+.footer_container{
+  margin-top: 10px;
+  background-color: #0a5c0a;
+}
+
+.logo2{
+  background-color: green;
+  border-radius: 10px;
+}
+
+.iframe{
+  height: 700px;
+}
+
+.valor_total_container{
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid green;
+  border-radius: 0;
+  padding: 10px;
+
+}
+
+.swiper-slide{
+  display: flex;
+  justify-content: center;
+}
+
+#pedidos-container{
+  display: flex;
+  justify-content: center;
+   width: 100%;
+   height: 70vh;
+}
+
+
+.pedido_item_container{
+  display: flex;
+  justify-content: center;
+    width: 70%;
+    flex-direction: column;
+    align-self: center
+  
+}
+
+.pedidos-box {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Centraliza o Swiper dentro */
+  width: 100%;
+}
+
+.pedidos-box h6.posicionado {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.swiper {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+   height: 50vh;
+   border-radius: 10px;
+  max-width: 500px; /* ou o tamanho desejado */
+  margin-top: 20px;
+}
+
+.titulo_perfil {
+  font-size: 30px;
+  font-weight: 600;
+  border-bottom: 2px solid #0a5c0a;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.label-box{
+  margin-bottom: 10px;
+}
+
+.label-info{
+  font-weight: 600;
+  color: #495057;
+}
+
+.label-valor{
+  color: #343a40;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #0a5c0a;
+}
+
+.login_form{
+  padding: 10px;
+}
+
+.login_input{
+  padding: 5px;
+}
+
+.login_input input {
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+  height: 100%;
+  max-height: 500px;
+  border-radius: 5px;
+  border: 2px solid #0a5c0a;
+}
+
+.login_input label {
+  display: inline-block;
+  width: 80px; /* largura fixa para todas as labels */
+  font-weight: bold; /* opcional, só pra destacar */
+}

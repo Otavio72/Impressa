@@ -2,40 +2,41 @@ from usuarios.models import CustomUser
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
+# Formulário de registro de novo usuário. 
+# Extende o UserCreationForm padrão do Django, adicionando os campos de primeiro e último nome.
 class CustomCreationForm(UserCreationForm):
 
+    # Campos Adicionais para o cadastro
     first_name = forms.CharField(required=True, label='Primeiro Nome')
     last_name = forms.CharField(required=True, label='Último Nome')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Remove os textos de ajuda padrão
         self.fields['username'].help_text = None
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
 
-        self.fields['username'].widget = forms.TextInput(attrs={
-            'placeholder': 'Digite seu nome'
-        })
+        # Adiciona a classe CSS 'form-control' para estilização de cada campo
+        for field_name in self.fields:
+            css_class = 'form-control'
 
-        self.fields['first_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Digite seu primeiro nome'
-        })
 
-        self.fields['last_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Digite seu ultimo nome'
-        })
+            if field_name == 'email':
+                self.fields[field_name].widget.attrs.update({'class':css_class, 'id': 'email'})
+            if field_name == 'password1':
+                self.fields[field_name].widget.attrs.update({'class':css_class, 'id': 'senha'})
+            if field_name == 'password2':
+                self.fields[field_name].widget.attrs.update({'class':css_class})
+            if field_name == 'username':
+                self.fields[field_name].widget.attrs.update({'class':css_class})
+            if field_name == 'first_name':
+                self.fields[field_name].widget.attrs.update({'class':css_class})
+            if field_name == 'last_name':
+                self.fields[field_name].widget.attrs.update({'class':css_class})
 
-        self.fields['password1'].widget = forms.PasswordInput(attrs={
-            'id':'senha',
-            'placeholder': 'Digite sua senha',
-            })
-        
-        self.fields['email'].widget = forms.EmailInput(attrs={
-            'id':'email',
-            'placeholder': 'Digite seu email'
-        })
-
+    # Define os campos que serão exibidos no formulário e o modelo associado
     class Meta:
         model = CustomUser
         fields = ('username', 'first_name', 'last_name','email','password1', 'password2')

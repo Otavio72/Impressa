@@ -5,122 +5,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>booots</title>
+     
+    <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    
+    <!--CSS personalizado estático-->
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
 </head>
 <body>
 
     
-
-  <div class="header_container">
-    <header class=" cabecalho d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+  <!--Cabeçalho da página com logo e menu-->
+  <div>
+    <header class="cabecalho d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
-          
-            <a href="" class="d-inline-flex link-body-emphasis text-decoration-none">
-              <img class="logo_img" src="{% static 'img/impressa_logo.png' %}" alt="">
+            <a href="" class="link-body-emphasis text-decoration-none">
+              <img class="logo_img mx-auto d-block d-md-inline" src="{% static 'img/impressa_logo.png' %}" alt="">
             </a>
-        
         </div>
 
-  
+        <!--Menu de navegação principal--> 
         <div class="col-md-3 text-end">
           <a href="{% url 'login' %}" class="cabecalho-btn btn btn-outline-success me-2">Login</a>
-          <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Sign-up</a>
+          <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Registrar</a>
         </div>
       </header>
     </div>
 
-<div class="container_cont">
-
-    <div class="col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-          <div class="col-10 col-sm-8 col-lg-6">
-            <div class="container_register">
-                <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
-                    <div class="modal-dialog">
-                    <div class="modal-content rounded-4 shadow">
-                        <div class="modal-header p-5 pb-4 border-bottom-0">
-                        <h1 class="fw-bold mb-0 fs-2">Register</h1>
-                
-                        </div>
-                
-                        <div class="modal-body p-5 pt-0">
-                          <h2>Cadastro de Usuário</h2>
-                          <form method="POST">
-                              {% csrf_token %}
-                              {{ form.username }}
-                              {{ form.first_name }}
-                              {{ form.last_name }}
 
 
-                              {{ form.email }}
-                              <p id="mensagem-email"></p>
-                              
+<!--Seção principal de Registro-->
+<div class="container col-xxl-8 px-4 py-5">
+  <h2>Registre-se</h2>
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
 
-                              {{ form.password1 }}
-                              <p id="mensagem"></p>
-                              {{ form.password2 }}
-                              
-                              <button type="submit">Registrar</button>
-                          </form>                    
-
-                            <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
-                            <hr class="my-4">
-                            <h2 class="fs-5 fw-bold mb-3">Já á Menbro ?</h2>
-                            
-                            <button class="w-100 mb-2 btn btn-lg btn-outline-success" type="submit">
-                            <svg class="bi me-1" width="16" height="16" aria-hidden="true"><use xlink:href="#google"/></svg>
-                            Login
-                            </button>
-                        
-                        </div>
-                    </div>
-                    </div>
+    {# Formulário principal de registro de novo usuário #}
+    <div class="col-10 col-sm-8 col-lg-6 d-flex justify-content-center mx-auto d-block d-md-inline">
+      
+          <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+              
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="{{ form.username.id_for_label }}" class="form-label"><strong>Usuário:</strong></label>
+                  {{ form.username }}
+                  {{ form.username.errors }}
                 </div>
-            </div> 
-    
-          
-        </div>
-          <div class="col-lg-6">
+               
 
+                <div class="mb-3">
+                  <label for="{{ form.first_name.id_for_label }}" class="form-label"><strong>Primeiro Nome:</strong></label>
+                  {{ form.first_name }}
+                  {{ form.first_name.errors }}
+                </div>
+
+
+              <div class="mb-3">
+                  <label for="{{ form.last_name.id_for_label }}" class="form-label"><strong>Segundo Nome:</strong></label>
+                  {{ form.last_name }}
+                  {{ form.last_name.errors }}
+                </div>
+
+              </div>
+
+          
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="{{ form.email.id_for_label }}" class="form-label"><strong>Email:</strong></label><br>
+                  {{ form.email }}
+                  {{ form.email.errors }}
+                  <p id="mensagem-email"></p>
+                </div>
+                
+
+                <div class="mb-3">
+                  <label for="{{ form.password1.id_for_label }}" class="form-label"><strong>Senha:</strong></label><br>
+                  {{ form.password1 }}
+                  {{ form.password1.errors }}
+                  <p id="mensagem"></p>
+                </div>
+
+               <div class="mb-3">
+                  <label for="{{ form.password2.id_for_label }}" class="form-label"><strong>Confime sua Senha:</strong></label><br>
+                  {{ form.password2 }}
+                  {{ form.password2.errors }}
+                </div>
+              </div>
+            </div>
+              <!--Botão para envio do formulário de registro-->
+            <button class="w-50 mb-2 btn btn-lg btn-outline-success mx-auto d-block">Registrar</button>
+          </div>
+          
+          <!--Bloco com checklist visual de requisitos da senha-->
+          <div class="col-lg-6">
             <div class="container_regras">
                 <div class="modal-dialog modal-xs">
                     <div class="modal-content rounded-4 shadow">
-                    <div class="modal-body p-5">
-                        <p>🔒 Sua senha deve:</p>
-                        <ul>
-                            <li>Ter pelo menos 8 caracteres;</li>
-                            <li>Não ser parecida com seu nome ou e-mail;</li>
-                            <li>Não ser uma senha comum (ex: "123456", "senha123");</li>
-                            <li>Não ser composta apenas por números.</li>
-                        </ul>
-                    </div>
+                      <div id="mensagem" class="modal-body p-5">
+                          <p>🔒 Sua senha deve:</p>
+                          <ul>
+                              <p id="req0">❌ Mínimo 8 caracteres</p>
+                              <p id="req1">❌ Pelo menos uma letra maiúscula</p>
+                              <p id="req2">❌ Pelo menos um número</p>
+                              <p id="req3">❌ Pelo menos um caractere especial (!@#$...)</p>
+                          </ul>
+                      </div>
                     </div>
                 </div>
             </div>
-
-            </div>
           </div>
-        </div>
       </div>
+    </div>
+
+<!--Rodapé com contato e GitHub-->         
+<div class="container footer_container">
+  <footer class="footer d-flex flex-column justify-content-center align-items-center py-3 my-4 border-top text-center">
+    
+    <div class="mb-2">
+      <p class="mb-0">© 2025 Otávio Ribeiro. Todos os direitos reservados.</p>
+    </div>
+
+    <div>
+      <p class="mb-0">Confira meu GitHub: </p>
+      <a href="https://github.com/Otavio72" class="d-flex align-items-center justify-content-center text-info" aria-label="Confira meu GitHub">
+          Otavio72
+      </a>
+    </div>
+  </footer>
 </div>
 
-
-             
-
-        
-      <div class="container footer_container">
-        <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p class="col-md-4 mb-0">&copy; 2025 Company, Inc</p>
-      
-          <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" aria-label="Bootstrap">
-            <svg class="bi me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"/></svg>
-          </a>
-        </footer>
-      </div>
-
-        
+       <!--SVGs para ícones do tema (light/dark)--> 
       <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -137,7 +153,7 @@
         </symbol>
       </svg>
 
-
+      <!--Botão de troca de tema-->
       <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn_tema py-2 dropdown-toggle d-flex align-items-center"
           id="bd-theme"
@@ -165,7 +181,7 @@
       </button>
     </li>
     <li>
-      <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
         <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
         Auto
         <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
@@ -173,26 +189,40 @@
     </li>
   </ul>
 
-
-
-
+<!-- Scripts JS:
+     - Bootstrap Bundle (modal, dropdown etc)
+     - Troca de tema (claro/escuro)
+     - Validação de email e senha em tempo real --> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 
     <script>
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-          button.addEventListener('click', () => {
-            const theme = button.getAttribute('data-bs-theme-value');
-            document.documentElement.setAttribute('data-bs-theme', theme);
-      
-            document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
-              btn.classList.remove('active');
-              btn.setAttribute('aria-pressed', 'false');
-            });
-            button.classList.add('active');
-            button.setAttribute('aria-pressed', 'true');
-          });
-        });
+      document.querySelectorAll('[data-bs-theme-value]').forEach(button => { 
+        button.addEventListener('click', () => {
+          const theme = button.getAttribute('data-bs-theme-value');
+          document.documentElement.setAttribute('data-bs-theme', theme);
+          localStorage.setItem('theme', theme);
 
+          document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-pressed', 'true');
+        });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-bs-theme', savedTheme);
+          const activeButton = document.querySelector(`[data-bs-theme-value="${savedTheme}"]`);
+
+          if (activeButton){
+            activeButton.classList.add('active');
+            activeButton.setAttribute('aria-pressed', 'true');
+          }
+        }
+      });
 
         const emailInput = document.getElementById("email");
         const mensagemEmail = document.getElementById("mensagem-email");
@@ -223,9 +253,6 @@
         const senhaInput = document.getElementById("senha");
         const mensagem = document.getElementById("mensagem");
 
-        senhaInput.addEventListener("input", () => {
-            const senha = senhaInput.value;
-
         const requisitos = [
             { regex: /.{8,}/, msg: "Mínimo 8 caracteres" },
             { regex: /[A-Z]/, msg: "Pelo menos uma letra maiúscula" },
@@ -234,24 +261,29 @@
             { regex: /[^A-Za-z0-9]/, msg: "Pelo menos um caractere especial" }
         ];
 
-            let erros = [];
+            senhaInput.addEventListener("input", () => {
+            const senha = senhaInput.value;
+            let senhaValida = true;
+            
+            requisitos.forEach((regra, index) => {
+              const valido = regra.regex.test(senha);
+              const item = document.getElementById(`req${index}`);
+              item.textContent = `${valido ? "✅": "❌"} ${regra.msg}`;
+              item.style.color = valido ? "green" : "red";
 
-            requisitos.forEach(regra => {
-              if (!regra.regex.test(senha)){
-                erros.push(regra.msg);
-              }
+              if (!valido) senhaValida = false;
+
             });
 
-            if (erros.length === 0) {
-              mensagem.innerText = "✅ Senha válida!";
-              mensagem.style.color = "green";
+            if (senhaValida) {
+              mensagem.textContent = "✅ Senha válida!";
+              mensagem.style.color = "green"
             } else {
-                mensagem.innerText = "❌ Senha invalida:\n" + erros.join("\n");
-                mensagem.style.color = "red";
-            }
+                  mensagem.textContent = "❌ Senha inválida";
+                  mensagem.style.color = "red";
+            } 
 
         });
-
       </script>
     
 </body>

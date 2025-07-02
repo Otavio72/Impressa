@@ -1,28 +1,28 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .forms import UploadForm
-from .models import Carrinho, ItemCarrinho, Produto, Pedido, ItemPedido
+from .models import Carrinho, ItemCarrinho, Produto, Pedido, ItemPedido, Perfil
 from .ProcessarArquivo import ProcessarPDF
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.http import require_POST
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from usuarios.models import CustomUser
+from PyPDF2.errors import PdfReadError
 
 # Create your views here.
 
+# Remove um item específico do carrinho do usuário logado e redireciona para a página inicial
 @login_required
 def remover_item_carrinho(request, item_id):
     item = get_object_or_404(ItemCarrinho, id=item_id, carrinho__user=request.user)
     item.delete()
     return redirect('index')
 
+# Adiciona o produto ao carrinho do usuário logado e redireciona para a página inicial.
+# Se o usuário ainda não possuir um carrinho, um novo é criado e salvo na sessão.
+# Se o item selecionado já estiver no carrinho, sua quantidade é incrementada.
 @login_required
 def adicionar_ao_carrinho(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
     user = request.user
     
-
-    # Tenta recuperar o carrinho do usuário com base na sessão
     carrinho_id = request.session.get("carrinho_id")
     
     if carrinho_id:
@@ -30,32 +30,29 @@ def adicionar_ao_carrinho(request, produto_id):
     else:
         carrinho = None
 
-    # Se não existir, cria um novo carrinho e salva o ID na sessão
     if not carrinho:
         carrinho = Carrinho.objects.create(user=user)
         request.session["carrinho_id"] = carrinho.id
 
-    itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
 
 
-    # Adiciona o produto ao carrinho (usando um modelo intermediário ItemCarrinho, por exemplo)
-    item, criado = ItemCarrinho.objects.get_or_create(
+    item, foi_criado = ItemCarrinho.objects.get_or_create(
         carrinho=carrinho,
         produto=produto,
         defaults={'quantidade': 1}
     )
 
-    if not criado:
+    if not foi_criado:
         item.quantidade += 1
         item.save()
 
     return redirect('index')
 
     
-    
+# Renderiza o modal do carrinho com os itens do carrinho do usuário logado.
+# Se o usuário não possuir um carrinho, um carrinho vazio é renderizado.
 @login_required
 def modal_carrinho(request):
-    #carrinho, created = Carrinho.objects.get_or_create(user=request.user)
 
     carrinho_id = request.session.get("carrinho_id")
     if not carrinho_id:
@@ -73,21 +70,24 @@ def modal_carrinho(request):
             'quantidade_carrinho': 0,
         })
 
-
     itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
     total = sum(item.total for item in itens_carrinho)
     
-
     return render(request, 'partials/modal_carrinho.html', {
         'itens_carrinho': itens_carrinho,
         'total': total,
-        
     })
 
-
+# Renderiza a página inicial do site
 def index(request):
     return render(request, 'index.html')
 
+# View responsavel por processar a pagina de impressão.
+# Exibe o formulario de upload.
+# Valida e salva temporariamento o arquivo recebido
+# Processa o arquivo para calcular o preço de impressao com base nas opcoes escolhidas
+# Cria um objeto Produto no banco de dados com as informações do arquivo processado
+# Retorna os dados para a pagina impressao.html
 @login_required
 def impressao(request):
     form = UploadForm()
@@ -97,75 +97,101 @@ def impressao(request):
     nome = None
     url_arquivo = None
     produto = None
+    tipo_impressao = None
+    usar_encadernacao = None
+    usar_papel_90g = None
+    impressao_colorida = None
 
-    #produtos = Produto.objects.all()
-    
+    # Verifica se é uma requisição POST
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
             arquivo = form.cleaned_data['arquivo']
 
+            # Valida extensão do arquivo
+            if not arquivo.name.endswith(('.pdf', '.png', '.jpg', '.jpeg')):
+                messages.error(request, "Por favor selecione apenas arquivos .pdf, .png, .jpg ou .jpeg")
+                return redirect('impressao')
 
+            # Salva o arquivo na pasta temporária
             caminho_arquivo = f'media/temp/{arquivo.name}'
-
-            
-
             with open(caminho_arquivo, 'wb+') as destino:
                 for chunk in arquivo.chunks():
                     destino.write(chunk)
 
-            
-            colorido = request.POST.get('colorido') == 'on'
-            encadernar = request.POST.get('encadernar') == 'on'
-            papel_90g = request.POST.get('papel_90g') == 'on'
-            tipo = request.GET.get("tipo") or request.POST.get("tipo") or "jato"
+            # Lê as opções de impressão do fomulário recebido
+            impressao_colorida = request.POST.get('impressao_colorida') == 'on'
+            usar_encadernacao = request.POST.get('usar_encadernacao') == 'on'
+            usar_papel_90g = request.POST.get('usar_papel_90g') == 'on'
+            tipo_impressao = request.GET.get("tipo_impressao") or request.POST.get("tipo_impressao") or "jato"
 
-            processar = ProcessarPDF(caminho_arquivo, colorido=colorido, encadernar=encadernar,papel_90g=papel_90g,tipo=tipo)
+            try:
+                # Processa o arquivo
+                processador_pdf = ProcessarPDF(caminho_arquivo, impressao_colorida=impressao_colorida, usar_encadernacao=usar_encadernacao, usar_papel_90g=usar_papel_90g, tipo_impressao=tipo_impressao)
 
-            if caminho_arquivo.endswith('.pdf'):
-                numero_paginas, preco, nome = processar.pdf_preco()
+                if caminho_arquivo.endswith('.pdf'):
+                    numero_paginas, preco, nome = processador_pdf.pdf_preco()
+                else:  
+                    numero_paginas = 1
+                    nome, preco = processador_pdf.png_jpg_preco()
 
+                # Cria o produto no banco com os dados ja processados
+                produto = Produto.objects.create(
+                    nome=nome,
+                    preco=preco,
+                    tipo_impressao=tipo_impressao,
+                    opcoes={
+                        "impressao_colorida": impressao_colorida,
+                        "usar_encadernacao": usar_encadernacao,
+                        "usar_papel_90g": usar_papel_90g
+                    },
+                )
 
-            elif caminho_arquivo.endswith('.png') or caminho_arquivo.endswith('.jpg') or caminho_arquivo.endswith('jpeg'):
-                numero_paginas = 1
-                nome ,preco = processar.preco()
+                # Define o caminho para a exibição
+                url_arquivo = f"/media/temp/{arquivo.name}"
 
+            # Tratamento do erros
+            except PdfReadError:
+                messages.error(request, "Erro ao ler o PDF")
+                return redirect('impressao')
 
-            produto = Produto.objects.create(
-                nome=nome,
-                preco=preco,
-                tipo=tipo,
-                opcoes={
-                    "colorido": colorido,
-                    "encadernar": encadernar,
-                    "papel_90g": papel_90g
-                },
-                #url_arquivo = f"/media/temp/{arquivo.name}"
+            except FileNotFoundError:
+                messages.error(request, "Arquivo não encontrado")
+                return redirect('impressao')
 
-            )
+            except Exception as e:
+                messages.error(request, f"Ocorreu um erro inesperado: {e}")
+                return redirect('impressao')
 
-        
-            resultado = f"Arquivo: {nome}, Páginas: {numero_paginas}, Preço: {preco}"
-            url_arquivo = f"/media/temp/{arquivo.name}"
-
-        
-
+    # Renderiza a página passando os dados ou formulario vazio
     return render(request, 'impressao.html', {
-        'resultado': resultado,
-        'form':form,
+        'form': form,
         'url_arquivo': url_arquivo,
         'produto': produto,
-        
-        })
+        'preco': preco,
+        'nome': nome,
+        'numero_paginas': numero_paginas,
+        'tipo_impressao': tipo_impressao,
+        'impressao_colorida': impressao_colorida,
+        'usar_papel_90g': usar_papel_90g,
+        'usar_encadernacao': usar_encadernacao,
+    })
 
 
 
 
+# View responsável por exivir a página de pagamento
+# Recupera o carrinho do usuário logado a partir da sessão
+# Soma os valores a e quantidade total dos itens no carrinho
+# Renderiza a página de pagamento com essas informações
 @login_required
 def pagamento(request):
 
+    # Recupera o ID do carrinho salvo na sessão do usuário
     carrinho_id = request.session.get("carrinho_id")
+
+    # Se não ouver carrinho, retorna um carrinho vazio
     if not carrinho_id:
         return render(request, 'partials/modal_carrinho.html',{
             'itens_carrinho': [],
@@ -173,7 +199,10 @@ def pagamento(request):
             'quantidade_carrinho': 0,
         })
     
+    # Busca o carrinho no banco de dados para o usuário
     carrinho = Carrinho.objects.filter(id=carrinho_id, user=request.user).first()
+    
+    # Se o carrinho não for encontrado (ID inválido ou não pertence ao usuário)
     if not carrinho:
         return render(request, 'partials/modal_carrinho.html',{
             'itens_carrinho': [],
@@ -181,10 +210,14 @@ def pagamento(request):
             'quantidade_carrinho': 0,
         })
 
+    # Recupera os itens do carrinho
     itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
+    
+    # Calcula a quantidade total de itens e o valor total
     quantidade_carrinho = sum(item.quantidade for item in itens_carrinho)
     total = sum(item.total for item in itens_carrinho)
 
+    # Renderiza a página de pagamento com os dados do carrinho
     return render(request, 'pagamento.html' , {
         'itens_carrinho': itens_carrinho,
         'total': total,
@@ -192,51 +225,83 @@ def pagamento(request):
 
     })
 
+
 @login_required
 def finalizar_pagamento(request):
-    print(">>> FINALIZAR_PAGAMENTO VIEW CHAMADA")
+    if request.method == "POST":
+        carrinho_id = request.session.get("carrinho_id")
 
-    print(">>> SESSION:", dict(request.session))
-    carrinho_id = request.session.get("carrinho_id")
-    print(">>> CARRINHO ID:", carrinho_id)
+        if not carrinho_id:
+                return redirect('pagamento')
 
-    if not carrinho_id:
-        print(">>> carrinho_id não encontrado na sessão")
-        return redirect('pagamento')
+        carrinho = Carrinho.objects.filter(id=carrinho_id, user=request.user).first()
+        
+        if not carrinho:
+            return redirect('pagamento')
 
-    carrinho = Carrinho.objects.filter(id=carrinho_id, user=request.user).first()
-    print(">>> CARRINHO:", carrinho)
+        itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
 
-    if not carrinho:
-        print(">>> Carrinho não encontrado")
-        return redirect('pagamento')
+        if not itens_carrinho.exists():
+            return redirect('pagamento')
 
-    itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
-    print(">>> ITENS CARRINHO:", list(itens_carrinho))
+        total = sum(item.total for item in itens_carrinho)
+            
+        endereco = request.POST.get('address')
+        complemento = request.POST.get('address2')
+    
+        estado = request.POST.get('state')
 
-    if not itens_carrinho.exists():
-        print(">>> Nenhum item no carrinho")
-        return redirect('pagamento')
+        pagamento = request.POST.get('paymentMethod')
+        bairro = request.POST.get('bairro')
+        cidade = request.POST.get('cidade')
 
-    total = sum(item.total for item in itens_carrinho)
-    print(">>> TOTAL:", total)
+        cc_nome = request.POST.get('cc_nome')
+        cc_numero = request.POST.get('cc_numero')
+        cc_validade = request.POST.get('cc_validade')
+        cc_cvv = request.POST.get('cc_cvv')
 
-    pedido = Pedido.objects.create(user=request.user, total=total, carrinho=carrinho)
-    print(">>> PEDIDO CRIADO:", pedido)
+        billing_address = request.POST.get('same-address')
 
-    for item in itens_carrinho:
-        item_pedido = ItemPedido.objects.create(
-            pedido=pedido,
-            produto=item.produto,
-            quantidade=item.quantidade,
-            preco_unitario=item.produto.preco,
-        )
-        print(">>> ITEM PEDIDO:", item_pedido)
+        if request.POST.get('same-address') == "on":
+            shipping_address = billing_address
+        
+        if request.POST.get('save-info') == "on":
+            perfil, created = Perfil.objects.get_or_create(usuario=request.user)
+            perfil.endereco_padrao = request.POST.get('save-info')
+            perfil.save()
 
-    #carrinho.delete()
-    del request.session["carrinho_id"]
+        if not all([cc_nome,cc_numero,cc_validade,cc_cvv]):
+            return redirect('pagamento')
 
-    return redirect('index')
+        pedido = Pedido.objects.create(
+                user=request.user, 
+                total=total,
+                carrinho=carrinho,
+                endereco=endereco,
+                complemento = complemento,
+                bairro = bairro,
+                cidade = cidade,
+                estado = estado,
+                pagamento = pagamento,
+                )
+            
+
+        for item in itens_carrinho:
+                item_pedido = ItemPedido.objects.create(
+                pedido=pedido,
+                produto=item.produto,
+                quantidade=item.quantidade,
+                preco_unitario=item.produto.preco,
+                )
+                
+
+        
+        del request.session["carrinho_id"]
+
+        messages.success(request, "Pedido finalizado com sucesso!")
+        return redirect('index')
+    
+    return redirect('pagamento')
 
 
 

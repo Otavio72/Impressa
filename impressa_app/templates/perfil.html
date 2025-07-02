@@ -5,105 +5,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>booots</title>
+    
+    <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+    
+    <!--JavaScript Swiper-->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    
+    <!--CSS personalizado estático-->
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
 </head>
 <body>
 
     
-
-  <div class="header_container">
+  <!--Cabeçalho da página com logo e menu--> 
+  <div>
     <header class=" cabecalho d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
         
               <a href="{% url 'index' %}">
-                <img class="logo_img" src="{% static 'img/impressa_logo.png' %}" alt="">
+                <img class="logo_img mx-auto d-block d-md-inline" src="{% static 'img/impressa_logo.png' %}" alt="">
               </a>
             
         </div>
-  
+        
+        <!--Menu de navegação principal-->
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           <li><a href="{% url 'index' %}" class="nav-link px-2">Home</a></li>
           <li><a href="{% url 'quemsomos' %}" class="nav-link px-2">Quem somos</a></li>
         </ul>
-  
+        
+        {# Botões de login/logout/perfil, dependendo do estado de autenticação #}
         <div class="col-md-3 text-end">
           {% if user.is_authenticated %}
-            <a href="{% url 'perfil' %}" class="cabecalho-btn btn btn-outline-success me-2">perfil</a>
-            <a href="{% url 'logout' %}" class="cabecalho-btn btn btn-outline-success me-2">logout</a>
+            <a href="{% url 'perfil' %}" class="cabecalho-btn btn btn-outline-success me-2">Perfil</a>
+            <a href="{% url 'logout' %}" class="cabecalho-btn btn btn-outline-success me-2">Logout</a>
           {% else %}
             <a href="{% url 'login' %}" class="cabecalho-btn btn btn-outline-success me-2">Login</a>
-            <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Sign-up</a>
+            <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Registrar</a>
           {% endif %}
         </div>
       </header>
     </div>
 
+    <!--Seção com os dados do perfil do usuário autenticado-->
     <div class="container col-xxl-8 px-4 py-5">
         <div class="row align-items-center g-5 py-5">
           <div class="col-10 col-sm-8 col-lg-6">
-            
-            <h1 class="titulo_perfil">Perfil do Usuário</h1>
-            
+            <h1 class="titulo" id="titulo_perfil" >Perfil do Usuário</h1>
             <div class="label-box">
               <span class="label-info">Nome de usuário: </span>
-              <span class="label-valor">{{ user.username }}</span>
+              <span>{{ user.username }}</span>
             </div>
 
             <div class="label-box">
               <span class="label-info">Email: </span>
-              <span class="label-valor">{{ user.email }}</span>
+              <span>{{ user.email }}</span>
             </div>
 
             <div class="label-box">
               <span class="label-info">Primeiro nome: </span>
-              <span class="label-valor">{{ user.first_name }}</span>
+              <span>{{ user.first_name }}</span>
             </div>
 
             <div class="label-box">
               <span class="label-info">Último nome: </span>
-              <span class="label-valor">{{ user.last_name }}</span>
+              <span>{{ user.last_name }}</span>
             </div>
 
             <div class="label-box">
               <span class="label-info">Registrado em: </span>
-              <span class="label-valor">{{ user.date_joined|date:"d/m/Y" }}</span>
+              <span>{{ user.date_joined|date:"d/m/Y" }}</span>
             </div>
-
           </div>
-
         </div>
       </div>
 
 
+      {# Historico de pedidos já realizados #}
       <div id="pedidos-container">
-        <div class="container col-xxl-8 px-4 py-5">
+        <div class="container col-xxl-8 px-4 py-5 ">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-              
-
-              <div class="pedidos-box">
-              <h6 class="posicionado">Pedidos Já feitos</h6>
-                <div class="swiper mySwiper">
-                  <div class="swiper-wrapper">
-                    {% for pedido in pedidos %}
-                      <div class="swiper-slide">
-                        <div class="pedido_item_container" id="pedido-{{ pedido.id }}">
-                          <h5><strong>Pedido: #</strong> <span class="pedido-item">{{ pedido.id }}</span></h5>
-                          <h6><strong>Data:</strong> <span class="label-valor">{{ pedido.data_criado }}</span></h6>
-                          <h6><strong>Status:</strong> <span class="label-valor">{{ pedido.status }}</span></h6>
-                          <h6><strong>Total:</strong> <span class="label-valor">{{ pedido.total }}</span></h6>
-                        
-                          <!-- Adicione mais campos conforme necessário -->
+            
+              {% if pedidos %}
+                <div class="pedidos-box">
+                  <h6 class="posicionado">Pedidos Já feitos</h6>
+                  <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                      {% for pedido in pedidos %}
+                        <div class="swiper-slide">
+                          <div class="pedido_item_container" id="pedido-{{ pedido.id }}">
+                            <h5 class="label-info">Pedido: #<span class="pedido-item">{{ pedido.numero_pedido_usuario }}</span></h5>
+                            <h6 class="label-info">Data: <span>{{ pedido.data_criado }}</span></h6>
+                            <h6 class="label-info">Estado: <span>{{ pedido.estado }}</span></h6>
+                            <h6 class="label-info">Endereço: <span>{{ pedido.endereco }}, <span>{{ pedido.bairro }}, </span><span>{{ pedido.cidade }}</span></span></h6>
+                            {% if pedido.endereco2 %}
+                              <h6 class="label-info">Complemento: <span>{{ pedido.endereco2 }}</span></h6>
+                            {% endif %}
+                            <h6 class="label-info">Status: <span>{{ pedido.status }}</span></h6>
+                            <h6 class="label-info">Pagamento: <span>{{ pedido.pagamento }}</span></h6>
+                            <h6 class="label-info">Total: <span>R${{ pedido.total }}</span></h6>
+                          </div>
                         </div>
+                      {% endfor %}
                       </div>
-                    {% endfor %}
-                  </div>
-                  <div class="swiper-button-next"></div>
-                  <div class="swiper-button-prev"></div>
+
+                      <div class="swiper-button-next"></div>
+                      <div class="swiper-button-prev"></div>
+              {% else %}
+                      <div class="historico-vazio-container">
+                        <h1 class="titulo">Nenhum pedido realizado</h1>
+                      </div>
+              {% endif %}                  
                 </div>
               </div>
             </div>
@@ -111,18 +127,25 @@
       </div>
       
 
-        
-      <div class="container footer_container">
-        <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p class="col-md-4 mb-0">&copy; 2025 Company, Inc</p>
-      
-          <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" aria-label="Bootstrap">
-            <svg class="bi me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"/></svg>
-          </a>
-        </footer>
-      </div>
+<!--Rodapé com contato e GitHub-->        
+<div class="container footer_container">
+  <footer class="footer d-flex flex-column justify-content-center align-items-center py-3 my-4 border-top text-center">
+    
+    <div class="mb-2">
+      <p class="mb-0">© 2025 Otávio Ribeiro. Todos os direitos reservados.</p>
+    </div>
 
-        
+    <div>
+      <p class="mb-0">Confira meu GitHub: </p>
+      <a href="https://github.com/Otavio72" class="d-flex align-items-center justify-content-center text-info" aria-label="Confira meu GitHub">
+          Otavio72
+      </a>
+    </div>
+    
+  </footer>
+</div>
+
+      <!--SVGs para ícones do tema (light/dark)-->
       <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -139,7 +162,7 @@
         </symbol>
       </svg>
 
-
+      <!--Botão de troca de tema-->
       <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn_tema py-2 dropdown-toggle d-flex align-items-center"
           id="bd-theme"
@@ -167,7 +190,7 @@
       </button>
     </li>
     <li>
-      <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
         <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
         Auto
         <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
@@ -177,23 +200,36 @@
 
 
 
+<!--Scripts JS para Bootstrap, troca de tema, swiper--> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script>
+  document.querySelectorAll('[data-bs-theme-value]').forEach(button => { 
+    button.addEventListener('click', () => {
+      const theme = button.getAttribute('data-bs-theme-value');
+      document.documentElement.setAttribute('data-bs-theme', theme);
+      localStorage.setItem('theme', theme);
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+      document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
+    });
+  });
 
-    <script>
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-          button.addEventListener('click', () => {
-            const theme = button.getAttribute('data-bs-theme-value');
-            document.documentElement.setAttribute('data-bs-theme', theme);
-      
-            document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
-              btn.classList.remove('active');
-              btn.setAttribute('aria-pressed', 'false');
-            });
-            button.classList.add('active');
-            button.setAttribute('aria-pressed', 'true');
-          });
-        });
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      const activeButton = document.querySelector(`[data-bs-theme-value="${savedTheme}"]`);
+
+      if (activeButton){
+        activeButton.classList.add('active');
+        activeButton.setAttribute('aria-pressed', 'true');
+      }
+    }
+  });
 
         const swiper = new Swiper('.mySwiper', {
           loop: true,
@@ -210,7 +246,7 @@
           spaceBetween: 10,
 
         });
-      </script>
+</script>
     
 </body>
 </html>

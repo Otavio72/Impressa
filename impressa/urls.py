@@ -21,18 +21,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
+# Define as rotas para as paginas principais
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('usuarios/', include('usuarios.urls')),
-    path('index/', views.index, name='index'),
-    path('pagamento/', views.pagamento, name='pagamento'),
-    path('quemsomos/', views.quemsomos, name='quemsomos'),
-    path('finalizar_pagamento/', views.finalizar_pagamento, name='finalizar_pagamento'),
-    path('modal-carrinho/', views.modal_carrinho, name='modal_carrinho'),
-    path('remover-item/<int:item_id>/', views.remover_item_carrinho, name='remover_item_carrinho'),
-    path('adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
-    path('impressao/', views.impressao, name='impressao'),
-] 
+    path('admin/', admin.site.urls), # Painel administrativo do Django
+    path('', views.index, name='index'), # Pagina principal
+    path('usuarios/', include('usuarios.urls')), # Rotas relacionadas a usuários (login, cadastro, perfil)
+    path('pagamento/', views.pagamento, name='pagamento'), # Pagina de pagamento
+    path('quemsomos/', views.quemsomos, name='quemsomos'), # Pagina "Quem somos"
+    path('finalizar_pagamento/', views.finalizar_pagamento, name='finalizar_pagamento'), # Finalização de compra
+    path('modal_carrinho/', views.modal_carrinho, name='modal_carrinho'), # Modal do Carrinho (carregado via AJAX)
+    path('remover-item/<int:item_id>/', views.remover_item_carrinho, name='remover_item_carrinho'), # Remove item do carrinho
+    path('adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'), # Adiciona item ao carrinho
+    path('impressao/', views.impressao, name='impressao'), # Página de envio de arquivos para impressão
+]
+
+# Servir arquivos estáticos e de mídia no modo DEBUG (durante o desenvolvimento)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

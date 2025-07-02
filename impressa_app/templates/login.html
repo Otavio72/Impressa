@@ -5,65 +5,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>booots</title>
+    
+    <!--Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    
+    <!--CSS personalizado estático-->
     <link rel="stylesheet" href="{% static 'style.css' %}">
-
     <style>
       .errorlist {
         color: red;
       }
     </style>
-
 </head>
 <body>
 
     
-
-  <div class="header_container">
+  <!--Cabeçalho da página com logo e menu-->
+  <div>
     <header class=" cabecalho d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
-          
-            <a href="" class="d-inline-flex link-body-emphasis text-decoration-none">
-              <img class="logo_img" src="{% static 'img/impressa_logo.png' %}" alt="">
+            <a href="" class="link-body-emphasis text-decoration-none">
+              <img class="logo_img mx-auto d-block d-md-inline" src="{% static 'img/impressa_logo.png' %}" alt="">
             </a>
-        
         </div>
 
-  
+        <!--Menu de navegação principal-->
         <div class="col-md-3 text-end">
           <a href="{% url 'login' %}" class="cabecalho-btn btn btn-outline-success me-2">Login</a>
-          <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Sign-up</a>
+          <a href="{% url 'register' %}" class="cabecalho-btn btn btn-outline-success me-2">Registrar</a>
         </div>
       </header>
     </div>
 
-    
+    <!--Seção principal de Login-->
     <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="modal-dialog">
           <div class="modal-content rounded-4 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
             
-              
+            <div class="titulo-container mt-5">
+              <h1 class="titulo">Bem-vindo de volta!</h1>
+              <p class="subtitulo">Acesse sua conta para continuar</p>
             </div>
-      
+
             <div class="modal-body p-5 pt-0">
-
-
-              <h2>Login</h2>
                 <div class="login_form">
-                    <form method="POST">
+                    <form method="POST" class="needs-validation" novalidate>
                       {% csrf_token %}
 
-                      <div class="login_input">
-                        <label for="username">Usuário:</label>
-                        <input type="text" name="username" required><br>
+                      <div class="mb-3">
+                        <label for="username" class="form-label"><strong>Usuário:</strong></label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Digite Seu nome de usuario" required/>
+                      <div class="invalid-feedback">
+                        <p>Insira o Usuario</p>
+                      </div>
                       </div>
 
-                      <div class="login_input">
-                        <label for="password">Senha:</label>
-                        <input type="password" name="password" required><br>
+                      <div class="mb-3">
+                        <label for="password" class="form-label"><strong>Senha:</strong></label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Digite Sua Senha" required/>
+                        <div class="invalid-feedback">
+                          <p>Insira a Senha</p>
+                        </div>
                       </div>
-
                       <button type="submit" class="w-100 mb-2 btn btn-lg btn-outline-success">Entrar</button>
                     </form>
                 </div>
@@ -74,19 +77,28 @@
                     {% endif %}
             </div>
           </div>    
-
-        
-      <div class="container footer_container">
-        <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p class="col-md-4 mb-0">&copy; 2025 Company, Inc</p>
-      
-          <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" aria-label="Bootstrap">
-            <svg class="bi me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"/></svg>
-          </a>
-        </footer>
+        </div>
       </div>
 
-        
+<!--Rodapé com contato e GitHub-->
+<div class="container footer_container">
+  <footer class="footer d-flex flex-column justify-content-center align-items-center py-3 my-4 border-top text-center">
+    
+    <div class="mb-2">
+      <p class="mb-0">© 2025 Otávio Ribeiro. Todos os direitos reservados.</p>
+    </div>
+
+    <div>
+      <p class="mb-0">Confira meu GitHub: </p>
+      <a href="https://github.com/Otavio72" class="d-flex align-items-center justify-content-center text-info" aria-label="Confira meu GitHub">
+          Otavio72
+      </a>
+    </div>
+    
+  </footer>
+</div>
+
+      <!--SVGs para ícones do tema (light/dark)-->
       <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check2" viewBox="0 0 16 16">
           <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -103,7 +115,7 @@
         </symbol>
       </svg>
 
-
+      <!--Botão de troca de tema-->
       <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn_tema py-2 dropdown-toggle d-flex align-items-center"
           id="bd-theme"
@@ -115,50 +127,84 @@
     <svg class="bi my-1 theme-icon-active" aria-hidden="true"><use href="#circle-half"></use></svg>
     <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
   </button>
+ 
+
   <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
     <li>
-      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
         <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#sun-fill"></use></svg>
         Light
         <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
       </button>
     </li>
     <li>
-      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
         <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#moon-stars-fill"></use></svg>
         Dark
         <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
       </button>
     </li>
     <li>
-      <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
         <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
         Auto
         <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
       </button>
     </li>
   </ul>
+</div>
 
 
+<!--Scripts JS Bootstrap, troca de tema e validação de formulário-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+<script>
+      document.querySelectorAll('[data-bs-theme-value]').forEach(button => { 
+        button.addEventListener('click', () => {
+          const theme = button.getAttribute('data-bs-theme-value');
+          document.documentElement.setAttribute('data-bs-theme', theme);
+          localStorage.setItem('theme', theme);
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-
-    <script>
-        document.querySelectorAll('[data-bs-theme-value]').forEach(button => {
-          button.addEventListener('click', () => {
-            const theme = button.getAttribute('data-bs-theme-value');
-            document.documentElement.setAttribute('data-bs-theme', theme);
-      
-            document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
-              btn.classList.remove('active');
-              btn.setAttribute('aria-pressed', 'false');
-            });
-            button.classList.add('active');
-            button.setAttribute('aria-pressed', 'true');
+          document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
           });
+          button.classList.add('active');
+          button.setAttribute('aria-pressed', 'true');
         });
-      </script>
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+          document.documentElement.setAttribute('data-bs-theme', savedTheme);
+          const activeButton = document.querySelector(`[data-bs-theme-value="${savedTheme}"]`);
+
+          if (activeButton){
+            activeButton.classList.add('active');
+            activeButton.setAttribute('aria-pressed', 'true');
+          }
+        }
+      });
+
+        (() => {
+            'use strict'
+
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.from(forms).forEach(form => {
+              form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+              }, false)
+            })
+          })()
+</script>
+
+      
     
 </body>
 </html>

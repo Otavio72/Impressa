@@ -1,5 +1,5 @@
-# Big Game Survey 
-[![NPM](https://img.shields.io/npm/l/react)](https://github.com/Otavio72/Projetos/blob/main/LICENSE) 
+# Impressa 
+[![NPM](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/Otavio72/Impressa/blob/main/LICENSE) 
 
 
 # Sobre o projeto
@@ -15,70 +15,53 @@ Carrinho de compras e sistema de checkout simulado
 
 Sistema de login e registro de usuários
 
-## Layout mobile
-![pagina inicial](https://github.com/Otavio72/assets/blob/main/impressa1.png) ![Mobile 2](https://github.com/acenelio/assets/raw/main/sds1/mobile2.png)
-
 ## Layout web
-![Web 1](https://github.com/acenelio/assets/raw/main/sds1/web1.png)
+![Pagina Inicial](https://github.com/Otavio72/assets/blob/main/impressa1.png) ![Orçamento](https://github.com/Otavio72/assets/blob/main/impressa4.png)
 
-![Web 2](https://github.com/acenelio/assets/raw/main/sds1/web2.png)
+![Sobre o projeto](https://github.com/Otavio72/assets/blob/main/impressa5.png)
+
+![Modo escuro](https://github.com/Otavio72/assets/blob/main/impressaescuro.png)
 
 ## Modelo conceitual
 ![Modelo Conceitual](https://github.com/acenelio/assets/raw/main/sds1/modelo-conceitual.png)
 
 # Tecnologias utilizadas
-## Back end
-- Java
-- Spring Boot
-- JPA / Hibernate
-- Maven
-## Front end
-- HTML / CSS / JS / TypeScript
-- ReactJS
-- React Native
-- Apex Charts
-- Expo
-## Implantação em produção
-- Back end: Heroku
-- Front end web: Netlify
-- Banco de dados: Postgresql
 
+## Back end
+- Django
+- Python
+
+## Front end
+- HTML / CSS / JS 
+- Bootstrap 5
+  
 # Como executar o projeto
 
 ## Back end
-Pré-requisitos: Java 11
+Pré-requisitos: 
+Django 5.2
+asgiref 3.8.1
+sqlparse 0.5.3
+tzdata 2025.2
 
 ```bash
 # clonar repositório
-git clone https://github.com/devsuperior/sds1-wmazoni
+git clone https://github.com/Otavio72/Impressa
 
-# entrar na pasta do projeto back end
-cd backend
+Ative o ambiente virtual:
+No Windows (PowerShell):
+  ```powershell
+  .venv\Scripts\Activate.ps1
 
-# executar o projeto
-./mvnw spring-boot:run
-```
+No Linux/macOS:
+source .venv/bin/activate
 
-## Front end web
-Pré-requisitos: npm / yarn
+python manage.py runserver
 
-```bash
-# clonar repositório
-git clone https://github.com/devsuperior/sds1-wmazoni
-
-# entrar na pasta do projeto front end web
-cd front-web
-
-# instalar dependências
-yarn install
-
-# executar o projeto
-yarn start
+Acesse o projeto no navegador:
+http://127.0.0.1:8000/
 ```
 
 # Autor
-
-Wellington Mazoni de Andrade
-
-https://www.linkedin.com/in/wmazoni
-
+Otávio Ribeiro
+www.linkedin.com/in/otávio-ribeiro-57a359197

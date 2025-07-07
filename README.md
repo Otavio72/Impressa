@@ -23,7 +23,7 @@ Sistema de login e registro de usuários
 ![Modo escuro](https://github.com/Otavio72/assets/blob/main/impressaescuro.png)
 
 ## Modelo conceitual
-![Modelo Conceitual](https://github.com/acenelio/assets/raw/main/sds1/modelo-conceitual.png)
+![Modelo Conceitual](https://github.com/Otavio72/assets/blob/main/modelo_impressa.png)
 
 # Tecnologias utilizadas
 

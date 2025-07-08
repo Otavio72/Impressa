@@ -43,24 +43,39 @@ Django 5.2
 asgiref 3.8.1
 sqlparse 0.5.3
 tzdata 2025.2
+PyPDF2 3.0.1
 
 ```bash
 # clonar repositório
 git clone https://github.com/Otavio72/Impressa
 
 Ative o ambiente virtual:
+  python -m venv .venv
+
 No Windows (PowerShell):
   ```powershell
   .venv\Scripts\Activate.ps1
 
 No Linux/macOS:
-source .venv/bin/activate
+  source .venv/bin/activate
+
+Instale as dependências:
+  pip install -r requirements.txt
+
+Rode as migrações do banco de dados
+  python manage.py migrate
 
 python manage.py runserver
 
 Acesse o projeto no navegador:
 http://127.0.0.1:8000/
 ```
+
+👤 Como acessar o sistema
+Para acessar o Impressa, faça seu cadastro:
+1. Acesse: http://127.0.0.1:8000/usuarios/register/
+2. Preencha o formulário de cadastro
+3. Após o registro, você será redirecionado para a página inicial
 
 # Autor
 Otávio Ribeiro

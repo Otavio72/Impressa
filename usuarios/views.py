@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from impressa_app.models import  Pedido
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+
 
 # Exibe a página de perfil do usuário logado com a lista de pedidos realizados,
 # ordenados do mais recente para o mais antigo

@@ -22,7 +22,6 @@ class CustomCreationForm(UserCreationForm):
         for field_name in self.fields:
             css_class = 'form-control'
 
-
             if field_name == 'email':
                 self.fields[field_name].widget.attrs.update({'class':css_class, 'id': 'email'})
             if field_name == 'password1':

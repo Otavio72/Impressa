@@ -71,8 +71,6 @@ class ProcessarPDF:
         
         if self.usar_papel_90g:
             self.preco_unitario += 1 * self.preco_papel90g
-        
-        
     
         preco_formatado = f"{self.preco_unitario:.2f}"
         nome_arquivo = os.path.basename(self.caminho_completo)

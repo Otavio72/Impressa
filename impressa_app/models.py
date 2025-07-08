@@ -11,7 +11,7 @@ class Produto(models.Model):
     tipo_impressao = models.CharField(max_length=50) # Tipo de impressora usada (ex: jato, laser)
     opcoes = models.JSONField(blank=True, null=True)# Opções selecionadas (ex: cor, encadernação)
     quantidade = models.PositiveIntegerField(default=1) # Quantidade padrão
-    url_arquivo = models.FileField() # Caminho do arquivo enviado
+    url_arquivo = models.FileField() # Caminho do arquivo enviados
     
     def __str__(self):
         return self.nome
@@ -50,7 +50,7 @@ class Pedido(models.Model):
     bairro = models.CharField(max_length=50)
     cidade = models.CharField(max_length=50)
     estado = models.CharField(max_length=50)
-    status = models.CharField(max_length=255, choices=[('Em andamento', 'Em andamento'), ('Concluido', 'Concluido')], default='Em andamento')
+    status = models.CharField(max_length=255, default='Em andamento')
     total = models.DecimalField(max_digits=10, decimal_places=2)
     
     class Meta:

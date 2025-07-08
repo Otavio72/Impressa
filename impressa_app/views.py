@@ -179,8 +179,6 @@ def impressao(request):
     })
 
 
-
-
 # View responsável por exivir a página de pagamento
 # Recupera o carrinho do usuário logado a partir da sessão
 # Soma os valores a e quantidade total dos itens no carrinho
@@ -225,54 +223,52 @@ def pagamento(request):
 
     })
 
-
+# Finaliza o pagamento e cria o pedido
 @login_required
 def finalizar_pagamento(request):
     if request.method == "POST":
+        # Recupera ID do carrinho da sessão
         carrinho_id = request.session.get("carrinho_id")
-
         if not carrinho_id:
                 return redirect('pagamento')
 
+        # Busca o carrinho do usuário
         carrinho = Carrinho.objects.filter(id=carrinho_id, user=request.user).first()
-        
         if not carrinho:
             return redirect('pagamento')
 
+        # Recupera os itens do carrinho
         itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
-
         if not itens_carrinho.exists():
             return redirect('pagamento')
 
+        # Calcula o total do pedido
         total = sum(item.total for item in itens_carrinho)
             
+        # Recupera dados do formulário
         endereco = request.POST.get('address')
         complemento = request.POST.get('address2')
-    
         estado = request.POST.get('state')
-
         pagamento = request.POST.get('paymentMethod')
         bairro = request.POST.get('bairro')
         cidade = request.POST.get('cidade')
-
         cc_nome = request.POST.get('cc_nome')
         cc_numero = request.POST.get('cc_numero')
         cc_validade = request.POST.get('cc_validade')
         cc_cvv = request.POST.get('cc_cvv')
-
-        billing_address = request.POST.get('same-address')
-
-        if request.POST.get('same-address') == "on":
-            shipping_address = billing_address
         
+        
+        # Salva endereço no perfil se o usuário marcar "Salvar informações"
         if request.POST.get('save-info') == "on":
             perfil, created = Perfil.objects.get_or_create(usuario=request.user)
             perfil.endereco_padrao = request.POST.get('save-info')
             perfil.save()
 
+        # Verifica se os dados do cartão foram preenchidos
         if not all([cc_nome,cc_numero,cc_validade,cc_cvv]):
             return redirect('pagamento')
 
+        # Criar o pedido no banco de dados
         pedido = Pedido.objects.create(
                 user=request.user, 
                 total=total,
@@ -285,7 +281,7 @@ def finalizar_pagamento(request):
                 pagamento = pagamento,
                 )
             
-
+        # Criar os itens do pedido com base no carrinho
         for item in itens_carrinho:
                 item_pedido = ItemPedido.objects.create(
                 pedido=pedido,
@@ -295,16 +291,18 @@ def finalizar_pagamento(request):
                 )
                 
 
-        
+        # Limpa o carrinho da sessão
         del request.session["carrinho_id"]
 
+        # Mostra mensagem de sucesso e redireciona para a index
         messages.success(request, "Pedido finalizado com sucesso!")
         return redirect('index')
     
+    # Se não for POST, redireciona para a pagina de pagamento
     return redirect('pagamento')
 
 
-
+# Renderiza a Pagina Quem Somos
 def quemsomos(request):
     return render(request, 'quemsomos.html')
 

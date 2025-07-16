@@ -27,3 +27,6 @@ Thumbs.db
 
 # Arquivo sensíveis de ambiente
 .env
+
+# Pdfs temporarios
+/media/temp

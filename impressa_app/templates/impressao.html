@@ -16,37 +16,8 @@
 
     <!--CSS personalizado estático-->
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'input_impressao.css' %}" />
     
-<style>
-    input[type="file"] {
-    color: transparent;
-    width: 157px;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  input[type="file"]::-webkit-file-upload-button {
-    visibility: hidden;
-  }
-
-  input[type="file"]::before {
-    content: 'Selecionar Arquivo';
-    display: inline-block;
-    background: #198754;
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-    outline: none;
-    white-space: nowrap;
-    cursor: pointer;
-    font-weight: 500;
-  }
-
-  input[type="file"]:hover::before {
-    background-color: #157347;
-  }
-</style>
-
   </head>
   <body>
     

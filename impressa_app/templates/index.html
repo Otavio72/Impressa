@@ -31,7 +31,7 @@
           
 
           <!--Botão para abrir modal do carrinho--> 
-          <button id="btnCarrinho" class="btn-link nav-link px-2" data-bs-toggle="modal" data-bs-target="#modalCarrinho">Ver Carrinho</button>
+          <button id="btnCarrinho" class="btn-link nav-link px-2" data-url="{% url 'modal_carrinho' %}" data-bs-toggle="modal" data-bs-target="#modalCarrinho">Ver Carrinho</button>
 
 
 
@@ -224,73 +224,9 @@
 
 <!--Scripts JS para Bootstrap, troca de tema, carrinho e toasts--> 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-
-<script>
-      document.querySelectorAll('[data-bs-theme-value]').forEach(button => { 
-        button.addEventListener('click', () => {
-          const theme = button.getAttribute('data-bs-theme-value');
-          document.documentElement.setAttribute('data-bs-theme', theme);
-          localStorage.setItem('theme', theme);
-
-          document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-pressed', 'false');
-          });
-          button.classList.add('active');
-          button.setAttribute('aria-pressed', 'true');
-        });
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-          document.documentElement.setAttribute('data-bs-theme', savedTheme);
-          const activeButton = document.querySelector(`[data-bs-theme-value="${savedTheme}"]`);
-
-          if (activeButton){
-            activeButton.classList.add('active');
-            activeButton.setAttribute('aria-pressed', 'true');
-          }
-        }
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const cartButton = document.getElementById("btnCarrinho");
-        const cartModal = document.getElementById("modalCarrinho");
-
-        cartModal.addEventListener('hidden.bs.modal', () => {
-          if (cartButton) {
-            cartButton.blur();
-          }
-        });
-      });
-
-      function atualizarCarrinho() {
-        fetch('/modal_carrinho/')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('conteudoCarrinho').innerHTML = html;
-        });
-    }
-
-    document.querySelector('[data-bs-target="#modalCarrinho"]').addEventListener('click', function () {
-
-      fetch("{% url 'modal_carrinho' %}")
-              .then(response => response.text())
-              .then(html => {
-                  document.getElementById('modalCarrinhoContent').innerHTML = html;
-              });
-      });
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const toastElList = [].slice.call(document.querySelectorAll('.toast'))
-      toastElList.forEach(function (toastEl) {
-        const toast = new bootstrap.Toast(toastEl)
-        toast.show()
-    });
-  });
-
-</script>
+<script src="{% static 'js/temaJS.js' %}"></script>
+<script src="{% static 'js/toastJS.js' %}"></script>
+<script src="{% static 'js/carrinhoJS.js' %}"></script>
     
 </body>
 </html>

@@ -171,35 +171,11 @@
 
     <!--Scripts JS para Bootstrap, troca de tema--> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    
+    <script src="{% static 'js/temaJS.js' %}"></script>
 
     <script>
-      document.querySelectorAll('[data-bs-theme-value]').forEach(button => { 
-        button.addEventListener('click', () => {
-          const theme = button.getAttribute('data-bs-theme-value');
-          document.documentElement.setAttribute('data-bs-theme', theme);
-          localStorage.setItem('theme', theme);
-
-          document.querySelectorAll('[data-bs-theme-value]').forEach(btn => {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-pressed', 'false');
-          });
-          button.classList.add('active');
-          button.setAttribute('aria-pressed', 'true');
-        });
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-          document.documentElement.setAttribute('data-bs-theme', savedTheme);
-          const activeButton = document.querySelector(`[data-bs-theme-value="${savedTheme}"]`);
-
-          if (activeButton){
-            activeButton.classList.add('active');
-            activeButton.setAttribute('aria-pressed', 'true');
-          }
-        }
-      });
+ 
       </script>
 </body>
 </html>

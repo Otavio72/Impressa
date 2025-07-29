@@ -17,7 +17,7 @@ Impressa permite que usuários enviem documentos nos formatos **PDF**, **PNG** e
 - 🔐 Sistema de login e registro de usuários
 - 📚 Histórico de pedidos
 - 🌙 Modo escuro
-- 🧑‍💼 Painel de perfil e edição de usuário
+- 🧑‍💼 Painel de perfil
 
 ---
 

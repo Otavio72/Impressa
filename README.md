@@ -24,18 +24,18 @@ Impressa permite que usuários enviem documentos nos formatos **PDF**, **PNG** e
 ## 💻 Layout da aplicação
 
 ### Página inicial e orçamento
-![Página Inicial](https://github.com/Otavio72/assets/blob/main/impressa1.png)
-![Orçamento](https://github.com/Otavio72/assets/blob/main/impressa4.png)
+![Página Inicial](assets/impressa1.png)
+![Orçamento](assets/impressa4.png)
 
 ### Sobre o projeto e modo escuro
-![Sobre o projeto](https://github.com/Otavio72/assets/blob/main/impressa5.png)
-![Modo escuro](https://github.com/Otavio72/assets/blob/main/impressaescuro.png)
+![Sobre o projeto](assets/impressa5.png)
+![Modo escuro](assets/impressaescuro.png)
 
 ---
 
 ## 🗂️ Modelo conceitual
 
-![Modelo Conceitual](https://github.com/Otavio72/assets/blob/main/modelo_impressa.png)
+![Modelo Conceitual](assets/modelo_impressa.png)
 
 ---
 

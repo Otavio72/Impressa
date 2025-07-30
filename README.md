@@ -93,6 +93,15 @@ Para acessar o Impressa, faça seu cadastro:
 2. Preencha o formulário de cadastro
 3. Após o registro, você será redirecionado para a página inicial
 
+   📁 PDFs de teste
+Dentro do diretório:
+
+```makefile
+C:\Users\otavi\OneDrive\Área de Trabalho\COMPUTADOR\PROJETO\CFP\GFP\boletos_para_teste
+```
+Você encontrará alguns pdfs para teste da aplicação.
+
+
 # Autor
 Otávio Ribeiro
 www.linkedin.com/in/otávio-ribeiro-57a359197

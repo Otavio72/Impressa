@@ -93,7 +93,7 @@ Para acessar o Impressa, faça seu cadastro:
 2. Preencha o formulário de cadastro
 3. Após o registro, você será redirecionado para a página inicial
 
-   📁 PDFs de teste
+📁 PDFs de teste
 Dentro do diretório:
 
 ```makefile

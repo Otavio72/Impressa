@@ -104,4 +104,4 @@ Você encontrará alguns pdfs para teste da aplicação.
 
 # Autor
 Otávio Ribeiro
-www.linkedin.com/in/otávio-ribeiro-57a359197
+[🔗LinkedIn](https://www.linkedin.com/in/otávio-ribeiro-57a359197)

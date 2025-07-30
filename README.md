@@ -97,7 +97,7 @@ Para acessar o Impressa, faça seu cadastro:
 Dentro do diretório:
 
 ```makefile
-C:\Users\otavi\OneDrive\Área de Trabalho\COMPUTADOR\PROJETO\CFP\GFP\boletos_para_teste
+Impressa/Pfds_para_teste
 ```
 Você encontrará alguns pdfs para teste da aplicação.
 
